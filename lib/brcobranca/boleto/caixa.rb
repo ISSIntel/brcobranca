@@ -26,7 +26,8 @@ module Brcobranca
           carteira: '2',
           emissao: '4'
         }.merge!(campos)
-
+        
+        campos[:carteira] = '2' unless ['1','2'].include?(campos[:carteira])
         campos[:local_pagamento] = 'PREFERENCIALMENTE NAS CASAS LOTÉRICAS ATÉ O VALOR LIMITE'
 
         super(campos)
