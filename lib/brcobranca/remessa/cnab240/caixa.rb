@@ -4,8 +4,6 @@ module Brcobranca
   module Remessa
     module Cnab240
       class Caixa < Brcobranca::Remessa::Cnab240::Base
-        # digito da agencia
-        attr_accessor :digito_agencia
         # versao do aplicativo da CAIXA
         attr_accessor :versao_aplicativo
         # modalidade da carteira
@@ -41,7 +39,8 @@ module Brcobranca
           campos = { modalidade_carteira: '14',
                      emissao_boleto: '2',
                      distribuicao_boleto: '0',
-                     especie_titulo: '99' }.merge!(campos)
+                     especie_titulo: '99',
+                     versao_aplicativo: '010'}.merge!(campos)
           super(campos)
         end
 
@@ -103,6 +102,12 @@ module Brcobranca
           # ident. titulo         15
           "#{convenio.rjust(6, '0')}#{''.rjust(11, '0')}#{modalidade_carteira}#{pagamento.nosso_numero.to_s.rjust(15, '0')}"
         end
+
+        def digito_agencia
+          # para calcular o digito
+          agencia.modulo11(mapeamento: { 10 => 'X' }).to_s
+        end
+
       end
     end
   end
