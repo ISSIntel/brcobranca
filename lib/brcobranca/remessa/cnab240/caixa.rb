@@ -6,6 +6,10 @@ module Brcobranca
       class Caixa < Brcobranca::Remessa::Cnab240::Base
         # versao do aplicativo da CAIXA
         attr_accessor :versao_aplicativo
+
+        # tipo de remessa producao ou teste
+        attr_accessor :env_remessa
+
         # modalidade da carteira
         #   opcoes:
         #     11: título Registrado emissão CAIXA
@@ -27,11 +31,10 @@ module Brcobranca
         #     ‘3’ = Sacado via e-mail
         #     ‘4’ = Sacado via SMS
 
-        validates_presence_of :versao_aplicativo, :digito_agencia, message: 'não pode estar em branco.'
+        validates_presence_of :versao_aplicativo, message: 'não pode estar em branco.'
         validates_presence_of :convenio, message: 'não pode estar em branco.'
         validates_length_of :convenio, maximum: 6, message: 'não deve ter mais de 6 dígitos.'
         validates_length_of :versao_aplicativo, maximum: 4, message: 'não deve ter mais de 4 dígitos.'
-        validates_length_of :digito_agencia, is: 1, message: 'deve ter 1 dígito.'
         validates_length_of :modalidade_carteira, is: 2, message: 'deve ter 2 dígitos.'
 
         def initialize(campos = {})
@@ -40,6 +43,7 @@ module Brcobranca
                      emissao_boleto: '2',
                      distribuicao_boleto: '0',
                      especie_titulo: '99',
+                     env_remessa: 'REMESSA-TESTE',
                      versao_aplicativo: '010'}.merge!(campos)
           super(campos)
         end
@@ -50,6 +54,10 @@ module Brcobranca
 
         def versao_aplicativo=(valor)
           @versao_aplicativo = valor.to_s.rjust(4, '0') if valor
+        end
+
+        def env_remessa=(valor)
+          @env_remessa = valor.to_s.ljust(20, ' ') if valor
         end
 
         def cod_banco
@@ -65,7 +73,7 @@ module Brcobranca
         end
 
         def versao_layout_lote
-          '030'
+          '060'
         end
 
         def codigo_convenio
@@ -84,6 +92,10 @@ module Brcobranca
           # uso CAIXA        7
           # uso CAIXA        1
           "#{agencia.to_s.rjust(5, '0')}#{digito_agencia}#{convenio}#{''.rjust(7, '0')}0"
+        end
+
+        def tipo_remessa
+          env_remessa.ljust(20, ' ')
         end
 
         def complemento_header

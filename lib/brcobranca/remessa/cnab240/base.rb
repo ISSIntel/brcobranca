@@ -89,11 +89,10 @@ module Brcobranca
           header_arquivo << versao_layout_arquivo # num. versao arquivo           3
           header_arquivo << ''.rjust(5, '0') # densidade gravacao            5
           header_arquivo << ''.rjust(20, '0') # uso exclusivo                 20
-          header_arquivo << ''.rjust(20, '0') # uso exclusivo                 20
+          header_arquivo << tipo_remessa # uso exclusivo                 20
           header_arquivo << complemento_header # complemento do arquivo        29
           header_arquivo
         end
-
         # Monta o registro header do lote
         #
         # @param nro_lote [Integer]
@@ -108,7 +107,7 @@ module Brcobranca
           header_lote << '1' # tipo de registro        1
           header_lote << 'R' # tipo de operacao        1
           header_lote << '01' # tipo de servico         2
-          header_lote << '  ' # uso exclusivo           2
+          header_lote << '00' # uso exclusivo           2
           header_lote << versao_layout_lote # num.versao layout lote  3
           header_lote << ' ' # uso exclusivo           1
           header_lote << Brcobranca::Util::Empresa.new(documento_cedente, false).tipo # tipo de inscricao       1
@@ -310,6 +309,14 @@ module Brcobranca
           remittance = arquivo.join("\n").to_ascii.upcase
           remittance << "\n"
           remittance.encode(remittance.encoding, universal_newline: true).encode(remittance.encoding, crlf_newline: true)
+        end
+
+        # Tipo de remessa
+        #
+        # Este metodo deve ser sobrescrevido na classe do banco
+        #
+        def tipo_remessa
+          raise Brcobranca::NaoImplementado, 'Sobreescreva este método na classe referente ao banco que você esta criando'
         end
 
         # Complemento do registro

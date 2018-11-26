@@ -84,6 +84,10 @@ module Brcobranca
           "#{agencia.rjust(5, '0')}#{digito_agencia}#{conta_corrente.rjust(12, '0')}#{digito_conta} "
         end
 
+        def tipo_remessa
+          ''.rjust(20, '0')
+        end
+
         def complemento_header
           ''.rjust(29, ' ')
         end
