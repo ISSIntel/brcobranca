@@ -88,7 +88,7 @@ module Brcobranca
           header_arquivo << sequencial_remessa.to_s.rjust(6, '0') # numero seq. arquivo           6
           header_arquivo << versao_layout_arquivo # num. versao arquivo           3
           header_arquivo << ''.rjust(5, '0') # densidade gravacao            5
-          header_arquivo << ''.rjust(20, '0') # uso exclusivo                 20
+          header_arquivo << ''.rjust(20, ' ') # uso exclusivo                 20
           header_arquivo << tipo_remessa # uso exclusivo                 20
           header_arquivo << complemento_header # complemento do arquivo        29
           header_arquivo
@@ -153,7 +153,8 @@ module Brcobranca
           segmento_p << tipo_documento # tipo de documento                     1
           segmento_p << emissao_boleto # identificaco emissao                  1
           segmento_p << distribuicao_boleto # indentificacao entrega                1
-          segmento_p << pagamento.numero_documento.to_s.rjust(15, '0') # uso exclusivo                         4
+          segmento_p << pagamento.numero_documento.to_s.rjust(11, '0') # uso exclusivo                         11
+          segmento_p << ''.rjust(4, ' ') # uso exclusivo                         4
           segmento_p << pagamento.data_vencimento.strftime('%d%m%Y') # data de venc.                         8
           segmento_p << pagamento.formata_valor(15) # valor documento                       15
           segmento_p << ''.rjust(5, '0') # agencia cobradora                     5
@@ -169,11 +170,12 @@ module Brcobranca
           segmento_p << pagamento.formata_valor_desconto(15) # valor desconto                        15
           segmento_p << pagamento.formata_valor_iof(15) # valor IOF                             15
           segmento_p << pagamento.formata_valor_abatimento(15) # valor abatimento                      15
-          segmento_p << ''.rjust(25, ' ') # identificacao titulo empresa          25  *
-          segmento_p << '0' # cod. para protesto                    1   *
+          segmento_p << pagamento.numero_documento.to_s.rjust(11, '0') # uso exclusivo                         11
+          segmento_p << ''.rjust(14, ' ') #                                                       14  *
+          segmento_p << '3' # cod. para protesto                    1   *
           segmento_p << '00' # dias para protesto                    2   *
-          segmento_p << '0' # cod. para baixa                       1   *
-          segmento_p << '000' # dias para baixa                       2   *
+          segmento_p << '1' # cod. para baixa                       1   *
+          segmento_p << '000' # dias para baixa                       3   *
           segmento_p << '09' # cod. da moeda                         2
           segmento_p << ''.rjust(10, '0') # uso exclusivo                         10
           segmento_p << ' ' # uso exclusivo                         1
