@@ -144,7 +144,7 @@ module Brcobranca
           segmento_p << sequencial.to_s.rjust(5, '0') # num. sequencial do registro no lote   5
           segmento_p << 'P' # cod. segmento                         1
           segmento_p << ' ' # uso exclusivo                         1
-          segmento_p << '01' # cod. movimento remessa                2
+          segmento_p << pagamento.identificacao_ocorrencia # cod. movimento remessa                2
           segmento_p << agencia.to_s.rjust(5, '0') # agencia                               5
           segmento_p << digito_agencia.to_s # dv agencia                            1
           segmento_p << complemento_p(pagamento) # informacoes da conta                  34
