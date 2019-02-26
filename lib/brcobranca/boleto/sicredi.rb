@@ -125,7 +125,7 @@ module Brcobranca
       # 43 – 43      # 01      # Filler – zeros “0”
       # 44 – 44      # 01      # DV do campo livre calculado por módulo 11 com aproveitamento total (resto igual a 0 ou 1 DV cai para 0)
       def codigo_barras_segunda_parte
-        campo_livre = "#{carteira}1#{nosso_numero_codigo_barra}#{agencia_posto_conta}10"
+        campo_livre = "11#{nosso_numero_codigo_barra}#{agencia_posto_conta}10"
         campo_livre + campo_livre.modulo11(mapeamento: mapeamento_para_modulo_11).to_s
       end
 
