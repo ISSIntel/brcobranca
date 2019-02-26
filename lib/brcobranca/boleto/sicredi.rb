@@ -20,7 +20,7 @@ module Brcobranca
       # 1 – Com Registro
       # 3 – Sem Registro
       # Obs.: O SICREDI não validará este campo.
-      validates_length_of :carteira, maximum: 1, message: 'deve ser menor ou igual a 1 dígitos.'
+      validates_length_of :carteira, maximum: 2, message: 'deve ser menor ou igual a 2 dígitos.'
       validates_length_of :posto, maximum: 2, message: 'deve ser menor ou igual a 2 dígitos.'
       validates_length_of :byte_idt, is: 1, message: 'deve ser 1 se o numero foi gerado pela agencia ou 2-9 se foi gerado pelo beneficiário'
       validates_length_of :convenio, maximum: 5, message: 'deve ser menor ou igual a 5 dígitos.'
@@ -43,7 +43,7 @@ module Brcobranca
       #
       # @return [String] 2 caracteres numéricos.
       def carteira=(valor)
-        @carteira = valor.to_s.rjust(1, '0') if valor
+        @carteira = valor.to_s.rjust(2, '0') if valor
       end
 
       # Posto
@@ -125,7 +125,7 @@ module Brcobranca
       # 43 – 43      # 01      # Filler – zeros “0”
       # 44 – 44      # 01      # DV do campo livre calculado por módulo 11 com aproveitamento total (resto igual a 0 ou 1 DV cai para 0)
       def codigo_barras_segunda_parte
-        campo_livre = "#{carteira}1#{nosso_numero_codigo_barra}#{agencia_posto_conta}10"
+        campo_livre = "11#{nosso_numero_codigo_barra}#{agencia_posto_conta}10"
         campo_livre + campo_livre.modulo11(mapeamento: mapeamento_para_modulo_11).to_s
       end
 
