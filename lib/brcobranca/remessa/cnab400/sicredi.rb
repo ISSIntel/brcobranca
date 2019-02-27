@@ -33,7 +33,7 @@ module Brcobranca
         validates_presence_of :agencia, :conta_corrente, :carteira, :convenio, :modalidade_carteira, :tipo_formulario, :digito_conta, :sequencial_remessa, :documento_cedente, message: 'não pode estar em branco.'
         # Remessa 400 - 8 digitos
         # Remessa 240 - 12 digitos
-        validates_length_of :conta_corrente, is: 8, message: 'deve ter 8 dígitos.'
+        validates_length_of :conta_corrente, is: 3, message: 'deve ter 3 dígitos.'
         validates_length_of :agencia, is: 4, message: 'deve ter 4 dígitos.'
         validates_length_of :modalidade_carteira, is: 1, message: 'deve ter 1 dígitos.'
         validates_length_of :digito_conta, maximum: 1, message: 'deve ter 1 dígito.'
@@ -42,7 +42,7 @@ module Brcobranca
         validates_length_of :documento_cedente, minimum: 11, maximum: 14, message: 'deve ter entre 11 e 14 dígitos.'
 
         # Com DV
-        validates_length_of :convenio, is: 9, message: 'deve ter 9 dígitos.'
+        validates_length_of :convenio, is: 5, message: 'deve ter 5 dígitos.'
 
         def initialize(campos = {})
           campos = {
