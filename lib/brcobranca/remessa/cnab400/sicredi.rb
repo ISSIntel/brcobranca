@@ -95,7 +95,7 @@ module Brcobranca
         # @return [String]
         #
         def monta_header
-          "01REMESSA01COBRANCA       #{info_conta}#{''.rjust(31, ' ')}#{cod_banco}#{nome_banco}#{data_geracao}#{''.rjust(8, ' ')}#{sequencial_remessa}#{complemento}000001"
+          "01REMESSA01COBRANCA       #{info_conta}#{''.rjust(31, ' ')}#{cod_banco}#{nome_banco}#{data_geracao}#{''.rjust(8, ' ')}#{sequencial_remessa.to_s.rjust(7, '0')}#{complemento}000001"
         end
 
         # Detalhe do arquivo
