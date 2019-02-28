@@ -127,7 +127,7 @@ module Brcobranca
           detalhe << pagamento.data_emissao.strftime('%d%m%y')              # data de emissao                       9[06]
           detalhe << '00000000000000000'
           detalhe << pagamento.data_vencimento.strftime('%d%m%y')           # data do vencimento                    9[06]
-          detalhe << '000000000000000000000000000000000000000'
+          detalhe << '00000000000000000000000000000000000000'
           detalhe << pagamento.identificacao_sacado.rjust(2, '0')           # identificacao do pagador              9[02]
           detalhe << '0'
           detalhe << pagamento.documento_sacado.to_s.rjust(14, '0')         # documento do pagador                  9[14]
