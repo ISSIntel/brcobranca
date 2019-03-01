@@ -6,6 +6,7 @@ module Brcobranca
       class Base < Brcobranca::Remessa::Base
         # documento do cedente
         attr_accessor :documento_cedente
+        attr_accessor :variacao
 
         validates_presence_of :carteira, message: 'não pode estar em branco.'
 
