@@ -95,7 +95,7 @@ module Brcobranca
           # digito conta            1
           # digito agencia/conta    1
           # ident. titulo no banco  20
-          "#{conta_corrente.rjust(12, '0')}#{digito_conta} #{identificador_titulo(pagamento.nosso_numero)}"
+          "#{conta_corrente.rjust(12, '0')}#{digito_conta} #{"#{convenio}#{formata_nosso_numero(pagamento.nosso_numero)}".ljust(20, ' ')}"
         end
 
         # Retorna o nosso numero mais o digito verificador
