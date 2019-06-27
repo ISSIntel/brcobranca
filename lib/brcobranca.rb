@@ -167,6 +167,11 @@ module Brcobranca
       autoload :BancoBrasil,  'brcobranca/remessa/cnab240/banco_brasil'
       autoload :Sicoob,       'brcobranca/remessa/cnab240/sicoob'
     end
+
+    module Rcb800
+      autoload :Base,         'brcobranca/remessa/rcb800/base'
+      autoload :BancoBrasil,  'brcobranca/remessa/rcb800/banco_brasil'
+    end
   end
 
   # Módulos para classes de utilidades
