@@ -72,6 +72,10 @@ module Brcobranca
       attr_accessor :parcela
       # <b>OPCIONAL</b>: Dias para o protesto
       attr_accessor :dias_protesto
+      # <b>APENAS RCB800</b>: Identificador do debito
+      attr_accessor :identificador_debito
+      # <b>APENAS RCB800</b>: Código de barras completo
+      attr_accessor :codigo_barras
 
       validates_presence_of :nosso_numero, :data_vencimento, :valor,
                             :documento_sacado, :nome_sacado, :endereco_sacado,
