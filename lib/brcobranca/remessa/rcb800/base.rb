@@ -6,11 +6,8 @@ module Brcobranca
       class Base < Brcobranca::Remessa::Base
         # documento do cedente
         attr_accessor :documento_cedente
-#        attr_accessor :variacao
 
-#        validates_presence_of :carteira, message: 'não pode estar em branco.'
-
-        # Data da geracao do arquivo seguindo o padrao DDMMAA
+        # Data da geracao do arquivo seguindo o padrao AAAAMMDD
         #
         # @return [String]
         #
@@ -32,16 +29,12 @@ module Brcobranca
           header << agencia.to_s.first(4)                  # agencia sem digito    9[4]
           header << Date.current.year.to_s                 # ano remessa           9[4]
           header << sequencial_remessa.to_s.rjust(5, '0')  # numero remessa        9[5]
-          header << data_geracao(1).to_s                   # inicio vigencia       9[8]
-          header << fim_vigencia.to_s                      # fim vigencia          9[8]
+          header << data_geracao.to_s                      # inicio vigencia       9[8]
+          header << data_geracao(365).to_s                 # fim vigencia          9[8]
           header << '105124422'                            # codigo cliente MCI    9[9]
           header << ' '*379                                # complemento registro  x[379]
           header << '000000001'                            # num. sequencial       9[5]        00001
           header
-        end
-
-        def fim_vigencia
-          pagamentos.first.data_vencimento.strftime('%Y%m%d')
         end
 
         # Trailer do arquivo remessa
@@ -49,7 +42,7 @@ module Brcobranca
           trailer = 'Z'                                #identificacao registro  X[1]      Z
           trailer << sequencial.to_s.rjust(9, '0')     #total registros         9[9]
           trailer << ' '*431                           # complemento            X[431]
-          trailer << (sequencial+1).to_s.rjust(9, '0') # num. sequencial        9[9]
+          trailer << (sequencial).to_s.rjust(9, '0')   # num. sequencial        9[9]
           trailer
         end
 
