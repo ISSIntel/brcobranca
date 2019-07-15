@@ -38,11 +38,11 @@ module Brcobranca
         end
 
         # Trailer do arquivo remessa
-        def monta_trailer(sequencial)
+        def monta_trailer(contador)
           trailer = 'Z'                                #identificacao registro  X[1]      Z
-          trailer << sequencial.to_s.rjust(9, '0')     #total registros         9[9]
+          trailer << (contador-1).to_s.rjust(9, '0')       #total registros         9[9]
           trailer << ' '*431                           # complemento            X[431]
-          trailer << (sequencial).to_s.rjust(9, '0')   # num. sequencial        9[9]
+          trailer << (contador+1).to_s.rjust(9, '0')   # num. sequencial        9[9]
           trailer
         end
 
