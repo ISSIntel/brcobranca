@@ -12,7 +12,7 @@ module Brcobranca
         attr_accessor :convenio
         attr_accessor :tipo_cobranca
 
-        validates_presence_of :agencia, :conta_corrente, :convenio, message: 'não pode estar em branco.'
+        validates_presence_of :agencia, :convenio, message: 'não pode estar em branco.'
 
 
         # Retorna dígito verificador da agência
