@@ -12,7 +12,11 @@ module Brcobranca
         # @return [String]
         #
         def data_geracao(extra=0)
-          (Date.current+extra.day).strftime('%Y%m%d')
+          dt_geracao = (Date.current+extra.day)
+          if extra == 1 && [6,0].include?(dt_geracao.wday)
+            dt_geracao = dt_geracao.wday == 6 ? dt_geracao+2.days : dt_geracao+1.day
+          end
+          dt_geracao.strftime('%Y%m%d')
         end
 
         # Header do arquivo remessa
@@ -29,7 +33,7 @@ module Brcobranca
           header << agencia.to_s.first(4)                  # agencia sem digito    9[4]
           header << Date.current.year.to_s                 # ano remessa           9[4]
           header << sequencial_remessa.to_s.rjust(5, '0')  # numero remessa        9[5]
-          header << data_geracao.to_s                      # inicio vigencia       9[8]
+          header << data_geracao(1).to_s                   # inicio vigencia       9[8]
           header << data_geracao(365).to_s                 # fim vigencia          9[8]
           header << '105124422'                            # codigo cliente MCI    9[9]
           header << ' '*379                                # complemento registro  x[379]
