@@ -6,6 +6,8 @@ module Brcobranca
       class Bradesco < Brcobranca::Remessa::Cnab400::Base
         # codigo da empresa (informado pelo Bradesco no cadastramento)
         attr_accessor :codigo_empresa
+        # Convenio
+        attr_accessor :convenio
 
         validates_presence_of :agencia, :conta_corrente, message: 'não pode estar em branco.'
         validates_presence_of :codigo_empresa, :sequencial_remessa,
