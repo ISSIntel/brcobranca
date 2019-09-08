@@ -73,7 +73,7 @@ module Brcobranca
         end
 
         def versao_layout_lote
-          '060'
+          '030'
         end
 
         def codigo_convenio

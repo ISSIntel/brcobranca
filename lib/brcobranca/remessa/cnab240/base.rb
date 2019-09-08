@@ -214,7 +214,7 @@ module Brcobranca
           segmento_q << pagamento.identificacao_avalista(false) # identificacao do sacador             1
           segmento_q << pagamento.documento_avalista.to_s.rjust(15, '0') # documento sacador                    15
           segmento_q << pagamento.nome_avalista.format_size(40) # nome avalista                         40
-          segmento_q << ''.rjust(3, '0') # cod. banco correspondente            3
+          segmento_q << ''.rjust(3, ' ') # cod. banco correspondente            3
           segmento_q << ''.rjust(20, ' ') # nosso numero banco correspondente    20
           segmento_q << ''.rjust(8, ' ') # uso exclusivo                        8
           segmento_q
