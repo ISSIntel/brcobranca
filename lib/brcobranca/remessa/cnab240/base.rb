@@ -175,7 +175,7 @@ module Brcobranca
           segmento_p << '3' # cod. para protesto                    1   *
           segmento_p << '00' # dias para protesto                    2   *
           segmento_p << '1' # cod. para baixa                       1   *
-          segmento_p << '000' # dias para baixa                       3   *
+          segmento_p << '020' # dias para baixa                       3   *
           segmento_p << '09' # cod. da moeda                         2
           segmento_p << ''.rjust(10, '0') # uso exclusivo                         10
           segmento_p << ' ' # uso exclusivo                         1
