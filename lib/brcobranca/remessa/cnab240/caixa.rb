@@ -69,11 +69,13 @@ module Brcobranca
         end
 
         def versao_layout_arquivo
-          '050'
+          # '107' # para convenios de 7 digitos
+          '101' # para convenios de ate 6 digitos
         end
 
         def versao_layout_lote
-          '030'
+          # '067' # para convenios de 7 digitos
+          '060' # para convenios de ate 6 digitos
         end
 
         def codigo_convenio

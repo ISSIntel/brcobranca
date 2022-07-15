@@ -77,7 +77,7 @@ module Brcobranca
           header_arquivo << ''.rjust(9, ' ') # uso exclusivo FEBRABAN        9
           header_arquivo << Brcobranca::Util::Empresa.new(documento_cedente, false).tipo # tipo inscricao                1
           header_arquivo << documento_cedente.to_s.rjust(14, '0') # numero de inscricao           14
-          header_arquivo << codigo_convenio # codigo do convenio no banco   20
+          header_arquivo << ''.rjust(20, '0') # Uso Exclusivo CAIXA   20
           header_arquivo << info_conta # informacoes da conta          20
           header_arquivo << empresa_mae.format_size(30) # nome da empresa               30
           header_arquivo << nome_banco.format_size(30) # nome do banco                 30
@@ -90,7 +90,7 @@ module Brcobranca
           header_arquivo << ''.rjust(5, '0') # densidade gravacao            5
           header_arquivo << ''.rjust(20, ' ') # uso exclusivo                 20
           header_arquivo << tipo_remessa # uso exclusivo                 20
-          header_arquivo << complemento_header # complemento do arquivo        29
+          header_arquivo << ''.rjust(29, ' ') # uso exclusivo       29
           header_arquivo
         end
         # Monta o registro header do lote
@@ -107,7 +107,7 @@ module Brcobranca
           header_lote << '1' # tipo de registro        1
           header_lote << 'R' # tipo de operacao        1
           header_lote << '01' # tipo de servico         2
-          header_lote << '  ' # uso exclusivo           2
+          header_lote << '00' # uso exclusivo           2
           header_lote << versao_layout_lote # num.versao layout lote  3
           header_lote << ' ' # uso exclusivo           1
           header_lote << Brcobranca::Util::Empresa.new(documento_cedente, false).tipo # tipo de inscricao       1
@@ -201,7 +201,7 @@ module Brcobranca
           segmento_q << sequencial.to_s.rjust(5, '0') # num. sequencial do registro no lote  5
           segmento_q << 'Q' # cod. segmento                        1
           segmento_q << ' ' # uso exclusivo                        1
-          segmento_q << '01' # cod. movimento remessa               2
+          segmento_q << pagamento.identificacao_ocorrencia # cod. movimento remessa               2
           segmento_q << pagamento.identificacao_sacado(false) # tipo insc. sacado                    1
           segmento_q << pagamento.documento_sacado.to_s.rjust(15, '0') # documento sacado                     14
           segmento_q << pagamento.nome_sacado.format_size(40) # nome cliente                         40
@@ -214,7 +214,7 @@ module Brcobranca
           segmento_q << pagamento.identificacao_avalista(false) # identificacao do sacador             1
           segmento_q << pagamento.documento_avalista.to_s.rjust(15, '0') # documento sacador                    15
           segmento_q << pagamento.nome_avalista.format_size(40) # nome avalista                         40
-          segmento_q << ''.rjust(3, ' ') # cod. banco correspondente            3
+          segmento_q << '000' # cod. banco correspondente            3
           segmento_q << ''.rjust(20, ' ') # nosso numero banco correspondente    20
           segmento_q << ''.rjust(8, ' ') # uso exclusivo                        8
           segmento_q
