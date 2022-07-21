@@ -35,6 +35,8 @@ module Brcobranca
 
         attr_accessor :variacao
 
+        attr_accessor :cod_juros, :taxa_juros
+
         validates_presence_of :agencia, message: 'não pode estar em branco.'
         validates_presence_of :documento_cedente, message: 'não pode estar em branco.'
         validates_length_of :codigo_carteira, is: 1, message: 'deve ter 1 dígito.'
@@ -45,7 +47,9 @@ module Brcobranca
         def initialize(campos = {})
           campos = { codigo_carteira: '1',
                      forma_cadastramento: '1',
-                     tipo_documento: '2' }.merge!(campos)
+                     tipo_documento: '2',
+                     cod_juros: '3',
+                     taxa_juros: '0' }.merge!(campos)
           super(campos)
         end
 
@@ -162,9 +166,9 @@ module Brcobranca
           segmento_p << especie_titulo # especie do titulo                     2
           segmento_p << aceite # aceite                                1
           segmento_p << pagamento.data_emissao.strftime('%d%m%Y') # data de emissao titulo                8
-          segmento_p << '3' # cod. do juros                         1   *
-          segmento_p << ''.rjust(8, '0') # data juros                            8   *
-          segmento_p << ''.rjust(15, '0') # valor juros                           15  *
+          segmento_p << cod_juros # cod. do juros                         1   *
+          segmento_p << (cod_juros == '3' ? '00000000' : (pagamento.data_vencimento+30).strftime('%d%m%Y'))  # data juros                            8   *
+          segmento_p << taxa_juros.rjust(15, '0') # valor juros                           15  *
           segmento_p << pagamento.cod_desconto # cod. do desconto                      1
           segmento_p << pagamento.formata_data_desconto('%d%m%Y') # data desconto                         8
           segmento_p << pagamento.formata_valor_desconto(15) # valor desconto                        15
