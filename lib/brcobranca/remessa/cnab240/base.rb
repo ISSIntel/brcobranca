@@ -35,7 +35,10 @@ module Brcobranca
 
         attr_accessor :variacao
 
-        attr_accessor :cod_juros, :taxa_juros
+        attr_accessor :cod_juros, :taxa_juros, :cod_multa, :taxa_multa
+
+        #flag para verificar se layout implementa segmento_r - opcional para configurar multa e descontos
+        attr_accessor :segment_r
 
         validates_presence_of :agencia, message: 'não pode estar em branco.'
         validates_presence_of :documento_cedente, message: 'não pode estar em branco.'
@@ -49,7 +52,11 @@ module Brcobranca
                      forma_cadastramento: '1',
                      tipo_documento: '2',
                      cod_juros: '3',
-                     taxa_juros: '0' }.merge!(campos)
+                     taxa_juros: '0',
+                     segment_r: '0',
+                     cod_multa: '0',
+                     taxa_multa: '0',
+          }.merge!(campos)
           super(campos)
         end
 
@@ -224,6 +231,34 @@ module Brcobranca
           segmento_q
         end
 
+        # Monta o registro segmento R do arquivo
+        #
+        # @param pagamento [Brcobranca::Remessa::Pagamento]
+        #   objeto contendo os detalhes do boleto (Dados de Desconto, Multa e Mensagens Livres)
+        # @return [String]
+        #
+        def monta_segmento_r(pagamento, nro_lote, sequencial)
+          segmento_r = '' # CAMPO                                TAMANHO
+          segmento_r << cod_banco # codigo banco                         3
+          segmento_r << nro_lote.to_s.rjust(4, '0') # lote de servico                      4
+          segmento_r << '3' # tipo de registro                     1
+          segmento_r << sequencial.to_s.rjust(5, '0') # num. sequencial do registro no lote  5
+          segmento_r << 'R' # cod. segmento                        1
+          segmento_r << ' ' # uso exclusivo                        1
+          segmento_r << pagamento.identificacao_ocorrencia # cod. movimento remessa               2
+          segmento_r << '0' # Código do Desconto 2                    1
+          segmento_r << ''.ljust(8, ' ') # Data do Desconto 2                    8
+          segmento_r << ''.ljust(15, '0') # Valor Desconto 2                    15
+          segmento_r << '0' # Código do Desconto 3                    1
+          segmento_r << ''.ljust(8, ' ') # Data do Desconto 3                    8
+          segmento_r << ''.ljust(15, '0') # Valor Desconto 3                    15
+          segmento_r << cod_multa # cod. do multa                         1
+          segmento_r << (cod_multa == '0' ? '00000000' : (pagamento.data_vencimento+1).strftime('%d%m%Y'))  # data multa              8
+          segmento_r << taxa_multa.rjust(15, '0') # valor juros                           15
+          segmento_r << ''.rjust(151, ' ') # uso exclusivo                        151
+          segmento_r
+        end
+
         # Monta o registro trailer do lote
         #
         # @param nro_lote [Integer]
@@ -288,6 +323,10 @@ module Brcobranca
             lote << monta_segmento_p(pagamento, nro_lote, contador)
             contador += 1
             lote << monta_segmento_q(pagamento, nro_lote, contador)
+            if segment_r != '0'
+              contador += 1
+              lote << monta_segmento_r(pagamento, nro_lote, contador)
+            end
             contador += 1
           end
           contador += 1 # trailer
@@ -310,7 +349,8 @@ module Brcobranca
           contador = 1
           arquivo.push monta_lote(contador)
 
-          arquivo << monta_trailer_arquivo(contador, ((pagamentos.size * 2) + (contador * 2) + 2))
+          linahs_de_pagamentos =  pagamentos.size * (segment_r != '0' ?  3 : 2)
+          arquivo << monta_trailer_arquivo(contador, (linahs_de_pagamentos + (contador * 2) + 2))
 
           remittance = arquivo.join("\n").to_ascii.upcase
           remittance << "\n"
