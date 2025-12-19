@@ -352,7 +352,7 @@ module Brcobranca
           linahs_de_pagamentos =  pagamentos.size * (segment_r != '0' ?  3 : 2)
           arquivo << monta_trailer_arquivo(contador, (linahs_de_pagamentos + (contador * 2) + 2))
 
-          remittance = arquivo.join("\n").to_ascii.upcase
+          remittance = arquivo.join("\n").to_s.mb_chars.upcase.to_s
           remittance << "\n"
           remittance.encode(remittance.encoding, universal_newline: true).encode(remittance.encoding, crlf_newline: true)
         end
