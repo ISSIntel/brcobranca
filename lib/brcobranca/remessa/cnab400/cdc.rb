@@ -90,7 +90,8 @@ module Brcobranca
           detalhe << ''.rjust(3, ' ')                                        # 031-033 Brancos
           detalhe << ''.rjust(4, '0')                                        # 034-037 Filler (zeros)
           detalhe << ''.rjust(25, ' ')                                       # 038-062 Uso da Empresa
-          detalhe << pagamento.nosso_numero.to_s.rjust(12, '0')              # 063-074 Nosso Número (12 caracteres)
+          detalhe << pagamento.nosso_numero.to_s.rjust(11, '0')              # 063-073 Nosso Número (11 caracteres)
+          detalhe << ' '                                                     # 074-074 Filler (1 espaço em branco)
           detalhe << ''.rjust(9, '0')                                        # 075-083 Filler (zeros)
           detalhe << formata_carteira                                        # 084-086 Número da Carteira (011,012,021,041)
           detalhe << ''.rjust(12, '0')                                       # 087-098 Filler (zeros)
@@ -104,8 +105,8 @@ module Brcobranca
           detalhe << '99'                                                    # 148-149 Espécie
           detalhe << 'N'                                                     # 150-150 Aceite (A ou N)
           detalhe << pagamento.data_emissao.strftime('%d%m%y')               # 151-156 Data Emissão (DDMMAA)
-          detalhe << '10'                                                    # 157-158 1ª Instrução (10 = não protestar)
-          detalhe << '10'                                                    # 159-160 2ª Instrução (10 = não protestar)
+          detalhe << '00'                                                    # 157-158 1ª Instrução
+          detalhe << '00'                                                    # 159-160 2ª Instrução
           detalhe << pagamento.formata_valor_mora                            # 161-173 Valor Mora (13 posições)
           detalhe << pagamento.formata_data_desconto                         # 174-179 Data Limite Desconto (6 posições)
           detalhe << pagamento.formata_valor_desconto                        # 180-192 Valor Desconto (13 posições)
