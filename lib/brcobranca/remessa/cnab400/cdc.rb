@@ -112,7 +112,7 @@ module Brcobranca
           detalhe << pagamento.formata_valor_desconto                        # 180-192 Valor Desconto (13 posições)
           detalhe << ''.rjust(13, '0')                                       # 193-205 Filler (zeros)
           detalhe << pagamento.formata_valor_abatimento                      # 206-218 Abatimento (13 posições)
-          detalhe << pagamento.identificacao_sacado                          # 219-220 Código Inscrição Pagador (01=CPF, 02=CNPJ)
+          detalhe << tipo_inscricao_sacado(pagamento)                        # 219-220 Código Inscrição Pagador (01=CPF, 02=CNPJ)
           detalhe << pagamento.documento_sacado.to_s.rjust(14, '0')          # 221-234 Número Inscrição Pagador
           detalhe << sanitize_string(pagamento.nome_sacado).ljust(30, ' ')[0..29]  # 235-264 Nome Pagador
           detalhe << '001'                                                   # 265-267 Código da Modalidade (001)
@@ -148,6 +148,17 @@ module Brcobranca
         # 01 = CPF, 02 = CNPJ
         def identificacao_beneficiario
           documento_cedente.to_s.size <= 11 ? '01' : '02'
+        end
+
+        # Retorna tipo de inscrição do sacado (pagador)
+        # Usa o campo tipo_documento_sacado se estiver preenchido
+        # Senão usa o método padrão identificacao_sacado
+        def tipo_inscricao_sacado(pagamento)
+          if pagamento.tipo_documento_sacado.present?
+            pagamento.tipo_documento_sacado
+          else
+            pagamento.identificacao_sacado
+          end
         end
       end
     end

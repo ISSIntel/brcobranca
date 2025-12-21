@@ -16,6 +16,8 @@ module Brcobranca
       attr_accessor :valor
       # <b>REQUERIDO</b>: documento do sacado (cliente)
       attr_accessor :documento_sacado
+      # <b>OPCIONAL</b>: tipo documento do sacado (01=CPF, 02=CNPJ)
+      attr_accessor :tipo_documento_sacado
       # <b>REQUERIDO</b>: nome do sacado (cliente)
       attr_accessor :nome_sacado
       # <b>REQUERIDO</b>: endereco do sacado (cliente)
